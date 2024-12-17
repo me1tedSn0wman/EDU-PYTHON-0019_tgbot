@@ -1,3 +1,7 @@
+#
+# Logger exception
+#
+
 import logging
 
 class EvenLogFilter(logging.Filter):
