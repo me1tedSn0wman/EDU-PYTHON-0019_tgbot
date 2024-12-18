@@ -1,21 +1,18 @@
-#
-# Callback factory
-#
 
-from aiogram.filters.callback_data import CallbackData
-
-
-from aiogram import F, Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
-from aiogram.utils.keyboard import InlineKeyboardBuilder # Builder for inline buttons 
+from aiogram.filters.callback_data import CallbackData
+from aiogram.types import (CallbackQuery, InlineKeyboardButton,
+                           InlineKeyboardMarkup, Message)
+from aiogram.utils.keyboard import InlineKeyboardBuilder # Builder for inline buttons
 
-################
 
 BOT_TOKEN = '7715698078:AAGuFLB_eyR71fCw_93gzdLAXX4K1kpdWfs'
 
 bot = Bot(token = BOT_TOKEN)
 dp = Dispatcher()
+
 
 ################
 
@@ -32,33 +29,35 @@ class GoodsCallbackFactory(CallbackData, prefix ='goods'):
 
 ############
 
-button_1 = InlineKeyboardButton(
-    text = 'Категория 1',
+builder = InlineKeyboardBuilder()
+
+builder.button(
+    text ='Категория 1',
     callback_data = GoodsCallbackFactory(
         category_id = 1,
         subcategory_id = 0,
         item_id = 0
-    ).pack()
+    )
 )
 
-button_2 = InlineKeyboardButton(
-    text = 'Kaтегория 2',
-    callback_data = GoodsCallbackFactory(
-        category_id = 2,
-        subcategory_id = 0,
-        item_id = 0
-    ).pack()
+builder.button(
+    text='Категория 2',
+    callback_data=GoodsCallbackFactory(
+        category_id=2,
+        subcategory_id=0,
+        item_id=0
+    )
 )
 
-markup = InlineKeyboardMarkup(
-    inline_keyboard = [[button_1],[button_2]]
-)
+builder.adjust(1)
+
+#######################
 
 @dp.message(CommandStart())
 async def process_start_command(message: Message):
     await message.answer(
         text = 'Вот такая клавиатура',
-        reply_markup = markup
+        reply_markup = builder.as_markup()
     )
 
 @dp.callback_query(GoodsCallbackFactory.filter(F.category_id == 1))
