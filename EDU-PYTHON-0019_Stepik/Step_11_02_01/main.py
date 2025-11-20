@@ -12,10 +12,13 @@ from redis.asyncio import Redis
 # SOMTHING NEW THERE
 
 #  ewrqerqw
+
 # test_two
 # test_three
 # test five
 # test sixth
+# test four
+
 # Вместо BOT TOKEN HERE нужно вставить токен вашего бота,
 # полученный у @BotFather
 BOT_TOKEN = '7715698078:AAGuFLB_eyR71fCw_93gzdLAXX4K1kpdWfs'
